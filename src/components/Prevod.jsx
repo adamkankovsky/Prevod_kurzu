@@ -2,18 +2,21 @@ import { useState, useEffect } from 'react'
 
 export const Prevod = () => {
     const [cislo, setCislo] = useState(0);
-    const [kurzy, setKurzy] = useState([]);
+    const [kurzy, setKurzy] = useState(undefined);
 
     const getKurzy = async () => {
         try {
             const response = await fetch("https://api.frankfurter.dev/v1/latest?base=EUR");
             const data = await response.json();
-            setKurzy(data);
+            setKurzy(data.rates);
+            console.log(kurzy);
+        } catch(error) {
+            console.log(error);
         }
     };
     
     useEffect(() => {
-        
+        getKurzy();
     }, []);
 
     return(
@@ -28,7 +31,13 @@ export const Prevod = () => {
                     onChange={(e) => setCislo(e.target.value)}
                     style={{ padding: '5px' }}
                 />
-                <select></select>
+                <select>
+                    {kurzy && 
+                        Object.entries(kurzy).map(([key, value]) => {
+                            <option value={value}>{key}</option>
+                        })
+                    }
+                </select>
                 <button>Převeď</button>
             </div>
         </div>
