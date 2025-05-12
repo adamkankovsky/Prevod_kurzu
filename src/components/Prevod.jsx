@@ -46,7 +46,7 @@ export const Prevod = () => {
                 </select>
                 <button onClick={() => vypocitej()}>Převeď</button>
             </div>
-            <h3>{vysledek}</h3>
+            <h3>EUR = {vysledek}</h3>
         </div>
     )
 }
