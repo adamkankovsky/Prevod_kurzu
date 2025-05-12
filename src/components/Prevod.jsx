@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react'
 export const Prevod = () => {
     const [cislo, setCislo] = useState(0);
     const [kurzy, setKurzy] = useState(undefined);
+    const [vysledek, setVysledek] = useState(0);
+    const [vybrany, setVybrany] = useState(0);
 
     const getKurzy = async () => {
         try {
@@ -19,6 +21,10 @@ export const Prevod = () => {
         getKurzy();
     }, []);
 
+    const vypocitej = () => {
+        setVysledek(vybrany * cislo);
+    }
+
     return(
         <div>
             <h1>
@@ -31,15 +37,16 @@ export const Prevod = () => {
                     onChange={(e) => setCislo(e.target.value)}
                     style={{ padding: '5px' }}
                 />
-                <select>
-                    {kurzy && 
-                        Object.entries(kurzy).map(([key, value]) => {
-                            <option value={value}>{key}</option>
-                        })
+                <select onChange={(e) => setVybrany(e.target.value)}>
+                    {kurzy &&
+                        Object.entries(kurzy).map(([key, value]) => (
+                            <option value={value} key={key}>{key}</option>
+                        ))
                     }
                 </select>
-                <button>Převeď</button>
+                <button onClick={() => vypocitej()}>Převeď</button>
             </div>
+            <h3>{vysledek}</h3>
         </div>
     )
 }
